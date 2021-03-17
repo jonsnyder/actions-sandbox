@@ -1,0 +1,19 @@
+{
+  "name": "actions-sandbox",
+  "version": "1.0.0",
+  "description": "repo to test github actions",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonsnyder/actions-sandbox.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonsnyder/actions-sandbox/issues"
+  },
+  "homepage": "https://github.com/jonsnyder/actions-sandbox#readme"
+}

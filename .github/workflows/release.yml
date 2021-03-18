@@ -1,0 +1,9 @@
+name: Deploy
+on: workflow_dispatch
+
+jobs:
+  deploy1:
+    name: "Deploy 1"
+    environment: Deploy
+    steps:
+      - uses: actions/checkout@v2

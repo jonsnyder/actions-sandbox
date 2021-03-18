@@ -4,6 +4,7 @@ on: workflow_dispatch
 jobs:
   deploy1:
     name: "Deploy 1"
+    runs-on: ubuntu-latest
     environment: Deploy
     steps:
       - uses: actions/checkout@v2

@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: "echo \"Hello World Deploy 1\""
-      - run: "echo ${{ github.event }}"
+      - run: "echo ${{ toJson(github) }}"

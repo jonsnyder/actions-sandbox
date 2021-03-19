@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jonsnyder/actions-sandbox#readme",
   "devDependencies": {
-    "@octokit/rest": "^18.3.5"
+    "@octokit/rest": "^18.3.5",
+    "semver": "^7.3.4"
   }
 }

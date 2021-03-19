@@ -1,0 +1,11 @@
+name: Deploy Prerelease
+on:
+  project_card:
+    types: [moved]
+jobs:
+  deploy1:
+    name: "Deploy 1"
+    runs-on: ubuntu-latest
+    steps:
+      - run: "echo \"Hello World Deploy 1\""
+      - run: "echo ${{ github.event }}"

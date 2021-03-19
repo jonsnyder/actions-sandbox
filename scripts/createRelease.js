@@ -66,10 +66,35 @@ const listCardsInColumn = async (columnId) => {
   console.log(JSON.stringify(response, null, 2));
 }
 
+const getCardContent = async (contentUrl) => {
+  const response = await octokit.request(`GET ${contentUrl}`);
+  console.log(JSON.stringify(response, null, 2));
+}
+
+
+
 (async () => {
-  const issueId = await createIssue(newVersion);
-  const projectId = await fetchProjectId(1);
-  const columnId = await fetchColumnIdByName(projectId, "New");
-  createIssueCard(columnId, issueId);
+  //const issueId = await createIssue(newVersion);
+  //const projectId = await fetchProjectId(1);
+  //const columnId = await fetchColumnIdByName(projectId, "New");
+  //createIssueCard(columnId, issueId);
   //listCardsInColumn(columnId);
+  await getCardContent("https://api.github.com/repos/jonsnyder/actions-sandbox/issues/11");
 })();
+
+
+// Handle Card move:
+// get Project from config
+// make sure matches with card moved
+// get Issue
+// make sure is a semver version string
+// get Column moved to
+// make sure it is a column we are interested in (Not New or Deploy)
+// build new version string
+// return version string
+
+// Handle push:
+// check package.json version
+// make sure it is beta or alpha version
+// increment version string
+// return version string

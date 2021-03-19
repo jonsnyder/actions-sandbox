@@ -3,6 +3,7 @@
 const package = require("../package.json");
 const semver = require("semver");
 const { Octokit } = require("@octokit/rest");
+const github = require("@actions/github");
 
 const auth = process.env.GITHUB_AUTH;
 
@@ -66,13 +67,12 @@ const listCardsInColumn = async (columnId) => {
   console.log(JSON.stringify(response, null, 2));
 }
 
-const getCardContent = async (contentUrl) => {
-  const response = await octokit.request(`GET ${contentUrl}`);
-  console.log(JSON.stringify(response, null, 2));
-}
+const getByUrl = async (url) => {
+  return octokit.request(`GET ${url}`);
+};
 
 
-
+/*
 (async () => {
   //const issueId = await createIssue(newVersion);
   //const projectId = await fetchProjectId(1);
@@ -81,20 +81,73 @@ const getCardContent = async (contentUrl) => {
   //listCardsInColumn(columnId);
   await getCardContent("https://api.github.com/repos/jonsnyder/actions-sandbox/issues/11");
 })();
+*/
 
+const {
+  event_name = "project_card",
+  project_card: {
+    project_url = "https://api.github.com/projects/12003213",
+    column_url = "https://api.github.com/projects/columns/13454321",
+    content_url = "https://api.github.com/repos/jonsnyder/actions-sandbox/issues/11",
+  }
+ } = github.context;
 
-// Handle Card move:
-// get Project from config
-// make sure matches with card moved
-// get Issue
-// make sure is a semver version string
-// get Column moved to
-// make sure it is a column we are interested in (Not New or Deploy)
-// build new version string
-// return version string
+const main = async () => {
+  if (event_name === "project_card") {
 
-// Handle push:
-// check package.json version
-// make sure it is beta or alpha version
-// increment version string
-// return version string
+    const project = await getByUrl(project_url);
+    if (project.data.number !== 1) {
+      console.error("Card moved on non-release project.");
+      process.exitCode = 1;
+      return;
+    }
+
+    const issue = await getByUrl(content_url);
+    if (!semver.valid(issue.data.name) || !semver.prerelease(issue.data.name) === null) {
+      console.error("Issue name in project card is not a semantic version:", issue.data.name);
+      process.exitCode = 1;
+      return;
+    }
+
+    const { data: { name } } = await getByUrl(column_url);
+    if (name !== "New" && name !== "Deploy") {
+      console.error("Card moved to:", name);
+      process.exitCode = 1;
+      return;
+    }
+
+    // todo: grab the package version from the correct branch
+    const version = semver.inc(issue.data.name, "prerelease", name.toLowerCase());
+    if (semver.lt(version, package.version)) {
+      console.error("Cannot release a version less than previous", package.version, version);
+      process.exitCode = 1;
+      return;
+    }
+
+    console.log(version);
+
+  } else if (event_name === "push") {
+    // check package.json version
+    // make sure it is beta or alpha version
+    const prerelease = semver.prerelease(package.version);
+    if (!semver.valid(package.version)) {
+      console.error("Invalid release version in package.json:", package.version);
+      process.exitCode = 1;
+      return;
+    }
+    if (!prerelease) {
+      console.error("No pre-release candidate to release.");
+      process.exitCode = 1;
+      return;
+    }
+    if (prerelease.length !== 2) {
+      console.error("Unknown prerelease format:", package.version);
+      process.exitCode = 1;
+      return;
+    }
+    // increment version string
+    console.log(semver.inc(package.version, "prerelease"));
+  }
+}
+
+main();

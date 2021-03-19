@@ -7,10 +7,16 @@ on:
       - main
       - "v[0-9]+.[0-9]+.[0-9]"
 jobs:
-  deploy1:
-    name: "Deploy 1"
+  computeReleaseVersion:
+    name: "Compute Release Version"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm ci
+      - run: ./script/computeNewRelease.js
+        env:
+          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

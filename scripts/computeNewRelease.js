@@ -17,18 +17,20 @@ const getByUrl = url => {
 };
 
 const {
-  event_name,
-  project_card: {
-    project_url,
-    column_url,
-    content_url,
-  } = {}
+  eventName,
+  payload: {
+    project_card: {
+      project_url,
+      column_url,
+      content_url,
+    } = {}
+  }
  } = github.context;
 
 console.log(JSON.stringify(github.context, null, 2));
 
 const main = async () => {
-  if (event_name === "project_card") {
+  if (eventName === "project_card") {
 
     const project = await getByUrl(project_url);
     if (project.data.number !== 1) {
@@ -61,7 +63,7 @@ const main = async () => {
     }
 
     console.log(version);
-  } else if (event_name === "push") {
+  } else if (eventName === "push") {
     // check package.json version
     // make sure it is beta or alpha version
     const prerelease = semver.prerelease(package.version);
@@ -82,6 +84,10 @@ const main = async () => {
     }
     // increment version string
     console.log(semver.inc(package.version, "prerelease"));
+  } else {
+    console.error("Unknown eventName:", eventName);
+    process.exitCode = 1;
+    return;
   }
 }
 

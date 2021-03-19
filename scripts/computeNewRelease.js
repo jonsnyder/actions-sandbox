@@ -17,13 +17,15 @@ const getByUrl = url => {
 };
 
 const {
-  event_name = "project_card",
+  event_name,
   project_card: {
     project_url,
     column_url,
     content_url,
   } = {}
  } = github.context;
+
+console.log(JSON.stringify(github.context, null, 2));
 
 const main = async () => {
   if (event_name === "project_card") {

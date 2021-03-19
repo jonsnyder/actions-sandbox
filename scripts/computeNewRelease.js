@@ -27,7 +27,7 @@ const {
   }
  } = github.context;
 
-console.log(JSON.stringify(github.context, null, 2));
+//console.log(JSON.stringify(github.context, null, 2));
 
 const main = async () => {
   if (eventName === "project_card") {

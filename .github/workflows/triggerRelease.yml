@@ -22,7 +22,7 @@ jobs:
         run: |
           echo "triggerWorkflow: ${{ steps.compute-new-release.outputs.triggerWorkflow }}"
           echo "ref: ${{ steps.compute-new-release.outputs.ref }}"
-          echo "inputs: ${{ steps.compute-new-release.outputs.ref }}"
+          echo "inputs: ${{ steps.compute-new-release.outputs.inputs }}"
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

@@ -86,7 +86,7 @@ const main = async () => {
       newVersion = `${issue.data.title}-${name.toLowerCase()}.0`;
     }
 
-    const ref = findVersionBranch(issue.data.title);
+    const ref = await findVersionBranch(issue.data.title);
 
     // todo: do these in the release Workflow
     // assert(semver.valid(newVersion), `New version is not a valid semantic version: ${newVersion}`);

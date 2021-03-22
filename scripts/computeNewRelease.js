@@ -17,16 +17,47 @@ const getByUrl = url => {
 };
 
 const {
-  ref,
+  ref: contextRef,
   eventName,
   payload: {
     project_card: {
       project_url,
       column_url,
       content_url,
-    } = {}
+    } = {},
+    repository: {
+      name: repo,
+      owner: {
+        name: owner
+      }
+    }
   }
  } = github.context;
+
+const hasBranch = async branch => {
+  const matchingRefs = await octokit.git.listMatchingRefs({
+    owner,
+    repo,
+    ref: `heads/${branch}`,
+    per_page: 1
+  });
+  console.log(JSON.stringify(matchingRefs, null, 2));
+  return matchingRefs.data.length > 0 && matchingRefs.data[0].ref === `refs/heads/${branch}`;
+};
+
+const findVersionBranch = async version => {
+  const versionParts = version.split(".");
+  const patchBranch = `${versionParts[0]}.${versionParts[1]}.x`;
+  const minorBranch = `${versionParts[0]}.x`;
+
+  if (await hasBranch(patchBranch)) {
+    return `refs/heads/${patchBranch}`;
+  }
+  if (await hasBranch(minorBranch)) {
+    return `refs/heads/${minorBranch}`;
+  }
+  return contextRef;
+};
 
 //console.log(JSON.stringify(github.context, null, 2));
 
@@ -55,10 +86,11 @@ const main = async () => {
       newVersion = `${issue.data.title}-${name.toLowerCase()}.0`;
     }
 
-    // todo: grab the package version from the correct branch
-    // todo, make this fail the job
-    assert(semver.valid(newVersion), `New version is not a valid semantic version: ${newVersion}`);
-    assert(semver.gt(newVersion, package.version), `Error versions must be increasing. Attempted ${package.version} => ${newVersion}`);
+    const ref = findVersionBranch(issue.data.title);
+
+    // todo: do these in the release Workflow
+    // assert(semver.valid(newVersion), `New version is not a valid semantic version: ${newVersion}`);
+    // assert(semver.gt(newVersion, package.version), `Error versions must be increasing. Attempted ${package.version} => ${newVersion}`);
 
     return { ref, inputs: { version: newVersion } };
   } else if (eventName === "push") {
@@ -71,7 +103,7 @@ const main = async () => {
     // increment version string
     const newVersion = semver.inc(package.version, "prerelease");
     // todo: find the issue url
-    return { ref, inputs: { version: newVersion } };
+    return { ref: contextRef, inputs: { version: newVersion } };
   } else {
     throw new Error("Unknown eventName:", eventName);
   }

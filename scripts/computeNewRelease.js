@@ -41,7 +41,7 @@ const main = async () => {
 
     const issue = await getByUrl(content_url);
     //console.log(JSON.stringify(issue, null, 2));
-    if (!semver.valid(issue.data.title) || !semver.prerelease(issue.data.title) === null) {
+    if (!semver.valid(issue.data.title) || semver.prerelease(issue.data.title) !== null) {
       console.error("Issue name in project card is not a semantic version:", issue.data.title);
       process.exitCode = 1;
       return;

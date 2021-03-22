@@ -23,6 +23,14 @@ jobs:
           echo "triggerWorkflow: ${{ steps.compute-new-release.outputs.triggerWorkflow }}"
           echo "ref: ${{ steps.compute-new-release.outputs.ref }}"
           echo "inputs: ${{ steps.compute-new-release.outputs.inputs }}"
+      - name: Invoke Release Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        if: steps.compute-new-release.outpus.triggerWorkflow == 'true'
+        with:
+          workflow: Release
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          ref: ${{ steps.compute-new-release.outputs.ref }}
+          inputs: ${{ steps.compute-new-release.outputs.inputs }}
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}

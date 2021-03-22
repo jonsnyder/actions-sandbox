@@ -57,6 +57,7 @@ const main = async () => {
 
     // todo: grab the package version from the correct branch
     // todo, make this fail the job
+    assert(semver.valid(newVersion), `New version is not a valid semantic version: ${newVersion}`);
     assert(semver.gt(newVersion, package.version), `Error versions must be increasing. Attempted ${package.version} => ${newVersion}`);
 
     return { ref, inputs: { version: newVersion } };

@@ -9,7 +9,7 @@ const auth = process.env.GITHUB_AUTH;
 
 const octokit = new Octokit({
   auth,
-  previews: ["inertia-preview"]
+  previews: ["inertia-preview"] // inertia is the github codename for Projects
 });
 
 const getByUrl = url => {
@@ -17,6 +17,7 @@ const getByUrl = url => {
 };
 
 const {
+  ref,
   eventName,
   payload: {
     project_card: {
@@ -29,66 +30,59 @@ const {
 
 //console.log(JSON.stringify(github.context, null, 2));
 
+const assert = (success, message) => {
+  if (!success) {
+    throw new Error(message);
+  }
+};
+
 const main = async () => {
   if (eventName === "project_card") {
 
     const project = await getByUrl(project_url);
-    if (project.data.number !== 1) {
-      console.error("Card moved on non-release project.");
-      process.exitCode = 1;
-      return;
-    }
+    assert(project.data.number === 1, "Card moved on non-release project.");
 
     const issue = await getByUrl(content_url);
-    //console.log(JSON.stringify(issue, null, 2));
-    if (!semver.valid(issue.data.title) || semver.prerelease(issue.data.title) !== null) {
-      console.error("Issue name in project card is not a semantic version:", issue.data.title);
-      process.exitCode = 1;
-      return;
-    }
+    assert(semver.valid(issue.data.title), `Issue name in project card is not a semantic version: ${issue.data.title}`);
+    assert(semver.prerelease(issue.data.title), `Issue name in project card should not have prerelease version: ${issue.data.title}`);
 
     const { data: { name } } = await getByUrl(column_url);
-    if (name === "New" || name === "Release") {
-      console.error("Card moved to:", name);
-      process.exitCode = 1;
-      return;
+    assert(name !== "New", "Nothing to do when name moved to \"New\"");
+    let newVersion;
+    if (name === "Release") {
+      newVersion = issue.data.title;
+    } else {
+      newVersion = `${issue.data.title}-${name.toLowerCase()}.0`;
     }
 
     // todo: grab the package version from the correct branch
-    const version = `${issue.data.title}-${name.toLowerCase()}.0`;
-    if (semver.lt(version, package.version)) {
-      console.error("Cannot release a version less than previous", package.version, version);
-      process.exitCode = 1;
-      return;
-    }
+    // todo, make this fail the job
+    assert(semver.gt(newVersion, package.version), `Error versions must be increasing. Attempted ${package.version} => ${newVersion}`);
 
-    console.log(version);
+    return { ref, inputs: { version: newVersion } };
   } else if (eventName === "push") {
-    // check package.json version
-    // make sure it is beta or alpha version
+
+    assert(semver.valid(package.version), `Invalid release version in package.json: ${package.version}`);
     const prerelease = semver.prerelease(package.version);
-    if (!semver.valid(package.version)) {
-      console.error("Invalid release version in package.json:", package.version);
-      process.exitCode = 1;
-      return;
-    }
-    if (!prerelease) {
-      console.error("No pre-release candidate to release.");
-      process.exitCode = 1;
-      return;
-    }
-    if (prerelease.length !== 2) {
-      console.error("Unknown prerelease format:", package.version);
-      process.exitCode = 1;
-      return;
-    }
+    assert(prerelease, "No pre-release candidate to release.");
+    assert(prerelease.length === 2, `Unknown prerelease format: ${package.version}`);
+
     // increment version string
-    console.log(semver.inc(package.version, "prerelease"));
+    const newVersion = semver.inc(package.version, "prerelease");
+    // todo: find the issue url
+    return { ref, inputs: { version: newVersion } };
   } else {
-    console.error("Unknown eventName:", eventName);
-    process.exitCode = 1;
-    return;
+    throw new Error("Unknown eventName:", eventName);
   }
 }
 
-main();
+main()
+  .then(({ ref, inputs }) => {
+    console.log("::set-output name=triggerWorkflow::true");
+    console.log(`::set-output name=ref::${ref}`);
+    console.log(`::set-output name=inputs::${JSON.stringify(inputs)}`);
+  })
+  .catch(error => {
+    console.error(error);
+    console.log("::set-output name=triggerWorkflow::false");
+  });

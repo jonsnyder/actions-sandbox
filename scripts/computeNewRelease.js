@@ -59,7 +59,7 @@ const findVersionBranch = async version => {
   return contextRef;
 };
 
-//console.log(JSON.stringify(github.context, null, 2));
+console.log(JSON.stringify(github.context, null, 2));
 
 const assert = (success, message) => {
   if (!success) {

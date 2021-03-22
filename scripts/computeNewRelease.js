@@ -44,7 +44,7 @@ const main = async () => {
 
     const issue = await getByUrl(content_url);
     assert(semver.valid(issue.data.title), `Issue name in project card is not a semantic version: ${issue.data.title}`);
-    assert(semver.prerelease(issue.data.title), `Issue name in project card should not have prerelease version: ${issue.data.title}`);
+    assert(semver.prerelease(issue.data.title) === null, `Issue name in project card should not have prerelease version: ${issue.data.title}`);
 
     const { data: { name } } = await getByUrl(column_url);
     assert(name !== "New", "Nothing to do when name moved to \"New\"");

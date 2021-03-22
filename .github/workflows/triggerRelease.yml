@@ -25,7 +25,7 @@ jobs:
           echo "inputs: ${{ steps.compute-new-release.outputs.inputs }}"
       - name: Invoke Release Workflow
         uses: benc-uk/workflow-dispatch@v1
-        if: steps.compute-new-release.outpus.triggerWorkflow == 'true'
+        if: steps.compute-new-release.outputs.triggerWorkflow == 'true'
         with:
           workflow: Release
           token: ${{ secrets.BOT_GITHUB_TOKEN }}

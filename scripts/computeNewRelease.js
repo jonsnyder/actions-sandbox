@@ -83,6 +83,6 @@ main()
     console.log(`::set-output name=inputs::${JSON.stringify(inputs)}`);
   })
   .catch(error => {
-    console.error(error);
+    console.error(error.message);
     console.log("::set-output name=triggerWorkflow::false");
   });

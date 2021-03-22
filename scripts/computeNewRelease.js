@@ -26,13 +26,12 @@ const {
       content_url,
     } = {},
     repository: {
-      name: repo,
-      owner: {
-        name: owner
-      }
+      full_name: repositoryFullName
     }
   }
  } = github.context;
+
+const [owner, repo] = repositoryFullName.split("/");
 
 const hasBranch = async branch => {
   const matchingRefs = await octokit.git.listMatchingRefs({
@@ -116,6 +115,6 @@ main()
     console.log(`::set-output name=inputs::${JSON.stringify(inputs)}`);
   })
   .catch(error => {
-    console.error(error.message);
+    console.error(error);
     console.log("::set-output name=triggerWorkflow::false");
   });

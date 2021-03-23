@@ -22,4 +22,4 @@ jobs:
           git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git/
           npx semver ${{ github.event.inputs.version }}
           npm version ${{ github.event.inputs.version }}
-          git push gh-origin --tags
+          git push gh-origin HEAD:${GITHUB_REF} --tags

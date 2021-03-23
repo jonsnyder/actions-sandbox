@@ -4,6 +4,7 @@ const package = require("../package.json");
 const semver = require("semver");
 const { Octokit } = require("@octokit/rest");
 const github = require("@actions/github");
+const assert = require("./utils/assert");
 
 const auth = process.env.GITHUB_AUTH;
 
@@ -60,12 +61,6 @@ const findVersionBranch = async version => {
 
 console.log(JSON.stringify(github.context, null, 2));
 
-const assert = (success, message) => {
-  if (!success) {
-    throw new Error(message);
-  }
-};
-
 const main = async () => {
   if (eventName === "project_card") {
 
@@ -86,10 +81,6 @@ const main = async () => {
     }
 
     const ref = await findVersionBranch(issue.data.title);
-
-    // todo: do these in the release Workflow
-    // assert(semver.valid(newVersion), `New version is not a valid semantic version: ${newVersion}`);
-    // assert(semver.gt(newVersion, package.version), `Error versions must be increasing. Attempted ${package.version} => ${newVersion}`);
 
     return { ref, inputs: { version: newVersion } };
   } else if (eventName === "push") {

@@ -14,11 +14,6 @@ const octokit = new Octokit({
 const owner = "jonsnyder";
 const repo = "actions-sandbox";
 
-/*octokit.repos.listCommits({
-  owner, repo, sha: "main"
-}).then(response => {
-  console.log(JSON.stringify(response, null, 2));
-});*/
 const releaseType = process.argv[2];
 if (releaseType !== "major" && releaseType !== "minor" && releaseType !== "patch") {
   throw new Error("usage: ./createRelease.js [major|minor|patch]");

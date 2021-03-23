@@ -85,7 +85,7 @@ const main = async () => {
 };
 
 main().
-  catch(e => {
+  catch(error => {
     console.error(error.message);
     process.exitCode = 1;
   });

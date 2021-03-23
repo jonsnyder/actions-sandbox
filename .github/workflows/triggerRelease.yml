@@ -1,4 +1,4 @@
-name: Release Trigger
+name: Trigger Release
 on:
   project_card:
     types: [moved]

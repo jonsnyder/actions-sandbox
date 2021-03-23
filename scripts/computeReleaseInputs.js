@@ -59,7 +59,7 @@ const findVersionBranch = async version => {
   return contextRef;
 };
 
-console.log(JSON.stringify(github.context, null, 2));
+//console.log(JSON.stringify(github.context, null, 2));
 
 const main = async () => {
   if (eventName === "project_card") {
@@ -106,6 +106,6 @@ main()
     console.log(`::set-output name=inputs::${JSON.stringify(inputs)}`);
   })
   .catch(error => {
-    console.error(error);
+    console.error(error.message);
     console.log("::set-output name=triggerWorkflow::false");
   });

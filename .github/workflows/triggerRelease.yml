@@ -8,8 +8,8 @@ on:
       - "[0-9]+.x"
       - "[0-9]+.[0-9]+.x"
 jobs:
-  computeReleaseVersion:
-    name: "Compute Release Version"
+  triggerReleaseIfNeeded:
+    name: "Trigger Release If Needed"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         if: steps.compute-release-inputs.outputs.triggerWorkflow == 'true'
         with:
-          workflow: Release
+          workflow: Deploy Release
           token: ${{ secrets.BOT_GITHUB_TOKEN }}
           ref: ${{ steps.compute-release-inputs.outputs.ref }}
           inputs: ${{ steps.compute-release-inputs.outputs.inputs }}

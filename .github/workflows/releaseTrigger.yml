@@ -1,0 +1,29 @@
+name: Release Trigger
+on:
+  project_card:
+    types: [moved]
+  push:
+    branch:
+      - main
+      - "[0-9]+.x"
+      - "[0-9]+.[0-9]+.x"
+jobs:
+  computeReleaseVersion:
+    name: "Compute Release Version"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm ci
+      - run: ./scripts/computeReleaseInputs.js
+        id: compute-release-inputs
+        env:
+          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
+      - name: Invoke Release Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        if: steps.compute-release-inputs.outputs.triggerWorkflow == 'true'
+        with:
+          workflow: Release
+          token: ${{ secrets.BOT_GITHUB_TOKEN }}
+          ref: ${{ steps.compute-release-inputs.outputs.ref }}
+          inputs: ${{ steps.compute-release-inputs.outputs.inputs }}

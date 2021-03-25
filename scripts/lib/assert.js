@@ -10,8 +10,10 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-module.exports = (success, message) => {
+module.exports = (success, message, exitCode = 1) => {
   if (!success) {
-    throw new Error(message);
+    const error = new Error(message);
+    error.exitCode = exitCode;
+    throw error;
   }
 };

@@ -13,10 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: npm ci
-      - run: ./scripts/computeReleaseInputs.js
+      - name: Compute Release Inputs
         id: compute-release-inputs
+        run: |
+          cd scripts
+          npm ci
+          ./bin/computeReleaseInputs.js
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
       - name: Invoke Release Workflow

@@ -12,8 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: npm ci
-      - run: ./scripts/initializeIntendedRelease.js ${{ github.event.inputs.type }}
+      - name: Initialize Intended Release
+        run: |
+          cd scripts
+          npm ci
+          ./bin/initializeIntendedRelease.js ${{ github.event.inputs.type }}
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}

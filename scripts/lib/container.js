@@ -14,6 +14,7 @@ const { Octokit } = require("@octokit/rest");
 
 const readEnvironmentVariable = name => {
   assert(process.env[name] != null, `The environment variable ${name} is required`);
+  return process.env[name];
 }
 
 

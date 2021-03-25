@@ -63,19 +63,19 @@ module.exports = memoizeGetters({
     return createGithubFacade(this);
   },
   get projectUrl() {
-    return project_url;
+    return this.githubContext.projectUrl;
   },
   get contentUrl() {
-    return content_url;
+    return this.githubContext.contentUrl;
   },
   get columnUrl() {
-    return column_url;
+    return this.githubContext.columnUrl;
   },
   get ref() {
-    return github.context.ref;
+    return this.githubContext.ref;
   },
   get eventName() {
-    return eventName
+    return this.githubContext.eventName;
   },
   get handleProjectCardMove() {
     return injectHandleProjectCardMove(this);

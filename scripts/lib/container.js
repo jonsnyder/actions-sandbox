@@ -48,10 +48,10 @@ module.exports = memoizeGetters({
     return repository.split("/");
   },
   get owner() {
-    return this.ownerAndRepo()[0];
+    return this.ownerAndRepo[0];
   },
   get repo() {
-    return this.ownerAndRepo()[1];
+    return this.ownerAndRepo[1];
   },
   get octokit() {
     return new Octokit({

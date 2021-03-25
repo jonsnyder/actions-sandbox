@@ -10,7 +10,7 @@ const injectSetOutputVars = require("./injectSetOutputVars");
 const injectValidateNewVersion = require("./injectValidateNewVersion");
 const memoizeGetters = require("./memoizeGetters");
 const process = require("process");
-const Octokit = require("@octokit/rest");
+const { Octokit } = require("@octokit/rest");
 
 const readEnvironmentVariable = name => {
   assert(process.env[name] != null, `The environment variable ${name} is required`);

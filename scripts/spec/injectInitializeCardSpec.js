@@ -52,19 +52,28 @@ describe("initializeCard", () => {
   it("increments major", async () => {
     build();
     await initializeCard("major");
-    expect(githubFacade.createIssue).toHaveBeenCalledOnceWith("2.0.0");
+    expect(githubFacade.createIssue).toHaveBeenCalledOnceWith({
+      title: "2.0.0",
+      body: jasmine.anything()
+    });
   });
 
   it("increments minor", async () => {
     build();
     await initializeCard("minor");
-    expect(githubFacade.createIssue).toHaveBeenCalledOnceWith("1.3.0");
+    expect(githubFacade.createIssue).toHaveBeenCalledOnceWith({
+      title: "1.3.0",
+      body: jasmine.anything()
+    });
   });
 
   it("increments patch", async () => {
     build();
     await initializeCard("patch");
-    expect(githubFacade.createIssue).toHaveBeenCalledOnceWith("1.2.4");
+    expect(githubFacade.createIssue).toHaveBeenCalledOnceWith({
+      title: "1.2.4",
+      body: jasmine.anything()
+    });
   });
 
   it("creates the card", async () => {

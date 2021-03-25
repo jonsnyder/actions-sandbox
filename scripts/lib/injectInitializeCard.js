@@ -14,7 +14,10 @@ module.exports = ({ packageVersion, githubFacade, projectNumber, console }) => a
 
   const newVersion = semver.inc(packageVersion, releaseType);
 
-  const issueId = await githubFacade.createIssue(newVersion);
+  const issueId = await githubFacade.createIssue({
+    title: newVersion,
+    body: `Track progress of release ${newVersion}.`
+  });
   const projectId = await githubFacade.fetchProjectId(projectNumber);
   const columnId = await githubFacade.fetchColumnIdByName(projectId, "New");
   await githubFacade.createIssueCard(columnId, issueId);

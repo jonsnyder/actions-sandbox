@@ -5,7 +5,12 @@ const createGithubFacade = require("./createGithubFacade");
 const injectHandleProjectCardMove = require("./injectHandleProjectCardMove");
 const injectHandlePush = require("./injectHandlePush");
 const injectInitializeCard = require("./injectInitializeCard");
+const injectRun = require("./injectRun");
+const injectSetOutputVars = require("./injectSetOutputVars");
+const injectValidateNewVersion = require("./injectValidateNewVersion");
 const memoizeGetters = require("./memoizeGetters");
+const process = require("process");
+const Octokit = require("@octokit/rest");
 
 const readEnvironmentVariable = name => {
   assert(process.env[name] != null, `The environment variable ${name} is required`);
@@ -91,5 +96,14 @@ module.exports = memoizeGetters({
   },
   get process() {
     return process;
+  },
+  get run() {
+    return injectRun(this);
+  },
+  get setOutputVars() {
+    return injectSetOutputVars(this);
+  },
+  get validateNewVersion() {
+    return injectValidateNewVersion(this);
   }
 });

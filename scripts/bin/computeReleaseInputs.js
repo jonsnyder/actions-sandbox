@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-const container = require("../lib/container");
+const { run, setOutputVars } = require("../lib/container");
 
-container.run(container.setOutputVariables);
+run(setOutputVars);

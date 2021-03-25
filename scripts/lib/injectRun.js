@@ -4,12 +4,12 @@ module.exports = ({ process, console }) => async func => {
   } catch (e) {
     if (e.exitCode !== undefined) {
       // These are errors from assert and softAssert so just log the message.
-      process.exitCode = e.exitCode;
       console.error(e.message);
+      process.exitCode = e.exitCode;
     } else {
       // These are unexpected errors so log the whole error.
-      process.exitCode = 1;
       console.error(e);
+      process.exitCode = 1;
     }
   }
 };

@@ -1,5 +1,6 @@
 const container = require("../lib/container");
 const glob = require("glob");
+const memoizeGetters = require("../lib/memoizeGetters");
 
 const definedKeys = {};
 Object.keys(container).forEach(key => {
@@ -29,6 +30,12 @@ describe("container", () => {
         files.forEach(file => {
           const inject = require(`../${file}`);
           test(inject);
+
+          const [filename, match] = file.match(/inject([^/]+).js/);
+          const property = `${match[0].toLowerCase()}${match.substring(1)}`;
+          if (!definedKeys[property]) {
+            fail(`No property defined on container: "${property}"`);
+          }
         });
         resolve();
       });
@@ -44,7 +51,7 @@ describe("container", () => {
       return c;
     }
     let cCalled = false;
-    const container = {
+    const container = memoizeGetters({
       get a() {
         return "mya"
       },
@@ -61,11 +68,22 @@ describe("container", () => {
       get foo() {
         return injectFoo(this);
       }
-    };
+    });
 
     expect(container.greeting()).toEqual("hello mya; goodbye myb");
     expect(cCalled).toBeFalse();
     container.foo;
     expect(cCalled).toBeTrue();
+  });
+
+  it("works with returned functions", () => {
+    const container = {
+      get myfunc() {
+        return () => "myfunc";
+      }
+    };
+
+    const { myfunc } = container;
+    expect(myfunc()).toEqual("myfunc");
   });
 });

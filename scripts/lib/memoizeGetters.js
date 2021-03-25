@@ -5,7 +5,7 @@ module.exports = obj => {
     if (typeof descriptor.get === "function") {
       Object.defineProperty(obj, key, { get: () => {
         delete obj[key];
-        return obj[key] = descriptor.get();
+        return obj[key] = descriptor.get.call(obj);
       }});
     }
   });

@@ -12,20 +12,7 @@ jobs:
     name: "Trigger Release If Needed"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Compute Release Inputs
-        id: compute-release-inputs
-        run: |
-          cd scripts
-          npm ci
-          ./bin/computeReleaseInputs.js
-        env:
-          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
-      - name: Invoke Release Workflow
-        uses: benc-uk/workflow-dispatch@v1
-        if: steps.compute-release-inputs.outputs.triggerWorkflow == 'true'
-        with:
-          workflow: Deploy Release
+      - uses: jonsnyder/project-card-release-automation/trigger-release@main
+      - with:
           token: ${{ secrets.BOT_GITHUB_TOKEN }}
-          ref: ${{ steps.compute-release-inputs.outputs.ref }}
-          inputs: ${{ steps.compute-release-inputs.outputs.inputs }}
+          workflowId: "deployRelease.yml"

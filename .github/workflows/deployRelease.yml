@@ -11,12 +11,11 @@ jobs:
     name: "Release"
     runs-on: ubuntu-latest
     steps:
+      - uses: jonsnyder/project-card-release-automation/validate-version@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: ${{ github.event.inputs.version }}
       - uses: actions/checkout@v2
-      - name: Validate Release Version
-        run: |
-          cd scripts
-          npm ci
-          ./bin/validateReleaseVersion.js ${{ github.event.inputs.version }}
       - name: Update Version
         run: |
           git config user.name $GITHUB_ACTOR

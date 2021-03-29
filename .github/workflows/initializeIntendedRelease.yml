@@ -15,6 +15,5 @@ jobs:
         uses: jonsnyder/project-card-release-automation/initialize-card@main
         with:
           releaseType: ${{ github.event.inputs.type }}
-          command: initialize-card
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}

@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Initialize Intended Release
-        uses: jonsnyder/project-card-release-automation@main
+        uses: jonsnyder/project-card-release-automation/initialize-card@main
         with:
           releaseType: ${{ github.event.inputs.type }}
           command: initialize-card

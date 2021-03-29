@@ -13,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: jonsnyder/project-card-release-automation/trigger-release@main
-      - with:
+        with:
           token: ${{ secrets.BOT_GITHUB_TOKEN }}
           workflowId: "deployRelease.yml"

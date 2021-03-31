@@ -1,6 +1,6 @@
 {
   "name": "actions-sandbox",
-  "version": "2.3.0-beta.0",
+  "version": "2.3.0",
   "description": "repo to test github actions",
   "main": "index.js",
   "scripts": {

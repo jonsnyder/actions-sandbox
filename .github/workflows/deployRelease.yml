@@ -24,7 +24,7 @@ jobs:
           npx semver ${{ github.event.inputs.version }}
           npm version ${{ github.event.inputs.version }}
           git push gh-origin HEAD:main --tags
-      - uses: josnyder/project-card-release-automation/record-release@main
+      - uses: jonsnyder/project-card-release-automation/record-release@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ github.event.inputs.version }}

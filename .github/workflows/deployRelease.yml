@@ -13,7 +13,6 @@ jobs:
     steps:
       - uses: jonsnyder/project-card-release-automation/validate-version@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ github.event.inputs.version }}
       - uses: actions/checkout@v2
       - name: Update Version
@@ -26,5 +25,4 @@ jobs:
           git push gh-origin HEAD:main --tags
       - uses: jonsnyder/project-card-release-automation/record-release@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ github.event.inputs.version }}

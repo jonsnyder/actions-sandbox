@@ -13,5 +13,5 @@ jobs:
     steps:
       - uses: jonsnyder/project-card-release-automation/initialize-card@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           releaseType: ${{ github.event.inputs.type }}
+          projectNumber: 1

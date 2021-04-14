@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Update Version
         run: |
-          # run tests
+          npm run ci
           npm run test
           # setup configuration
           git config user.name $GITHUB_ACTOR

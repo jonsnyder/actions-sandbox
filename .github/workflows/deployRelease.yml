@@ -16,6 +16,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ github.event.inputs.version }}
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
       - name: Update Version
         run: |
           # install dependencies

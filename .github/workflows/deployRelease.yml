@@ -21,9 +21,10 @@ jobs:
           git config user.name $GITHUB_ACTOR
           git config user.email gh-actions-${GITHUB_ACTOR}@github.com
           git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git/
-          npx semver ${{ github.event.inputs.version }}
           npm version ${{ github.event.inputs.version }}
           git push gh-origin HEAD:${GITHUB_REF} --tags
+          npm config set //registry.npmjs.org/:_authToken=${secrets.NPM_TOKEN}
+          npm publish
       - uses: jonsnyder/project-card-release-automation/record-release@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

@@ -3,6 +3,9 @@
   "version": "3.3.0",
   "description": "Increment an integer by one",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "jasmine"
   },

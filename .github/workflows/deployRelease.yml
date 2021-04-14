@@ -24,7 +24,7 @@ jobs:
           npm version ${{ github.event.inputs.version }}
           git push gh-origin HEAD:${GITHUB_REF} --tags
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          npm publish
+          npm publish --access public
       - uses: jonsnyder/project-card-release-automation/record-release@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

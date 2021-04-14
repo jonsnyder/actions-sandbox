@@ -1,10 +1,10 @@
 {
-  "name": "actions-sandbox",
+  "name": "@jonsnyder01/increment",
   "version": "3.3.0",
-  "description": "repo to test github actions",
+  "description": "Increment an integer by one",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@actions/github": "^4.0.0",
     "@octokit/rest": "^18.3.5",
+    "jasmine": "^3.7.0",
     "semver": "^7.3.4"
   }
 }

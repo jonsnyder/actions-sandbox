@@ -1,6 +1,6 @@
 {
   "name": "@jonsnyder01/increment",
-  "version": "3.4.0-beta.3",
+  "version": "3.4.0-beta.4",
   "description": "Increment an integer by one",
   "main": "index.js",
   "files": [

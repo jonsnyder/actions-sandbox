@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Approved"
-    if: ${{ contains(github.event.inputs.version, "-") == false }}
+    if: ${{ contains(github.event.inputs.version, '-') == false }}
   release:
     name: "Release"
     runs-on: ubuntu-latest

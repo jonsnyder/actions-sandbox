@@ -10,6 +10,7 @@ jobs:
   approval:
     name: "Approval"
     environment: Deploy
+    runs-on: ubuntu-latest
     steps:
       - run: echo "Approved"
   release:

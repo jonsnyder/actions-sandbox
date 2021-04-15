@@ -35,7 +35,7 @@ jobs:
           git add package.json package-lock.json
           git commit -m "${{ github.event.inputs.version }}"
           # publish the package to NPM if it hasn't already been published
-          if [[ -z "$(npm view @jonsnyder01/increment@${{ github.event.inputs.version }})" ]]
+          if [[ -z "$(npm view @jonsnyder01/increment@${{ github.event.inputs.version }})" ]]; then
             npm publish --access public
           fi
           # update reference to NPM version

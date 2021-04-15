@@ -47,7 +47,7 @@ jobs:
           # tag and push the release
           git commit -m "update self devDependency to ${{ github.event.inputs.version }}"
           git tag -a "v${{ github.event.inputs.version }}" -m "${{ github.event.inputs.version }}"
-          git push gh-origin HEAD:${GITHUB_REF}
+          git push gh-origin HEAD:${GITHUB_REF} --follow-tags
       - uses: jonsnyder/project-card-release-automation/record-release@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,6 +1,6 @@
 {
   "name": "@jonsnyder01/increment",
-  "version": "3.4.0-beta.2",
+  "version": "3.4.0-beta.3",
   "description": "Increment an integer by one",
   "main": "index.js",
   "files": [
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jonsnyder/actions-sandbox#readme",
   "devDependencies": {
+    "@jonsnyder01/increment": "^3.4.0-beta.3",
     "jasmine": "^3.7.0"
   }
 }

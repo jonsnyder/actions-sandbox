@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/jonsnyder/actions-sandbox#readme",
   "devDependencies": {
+    "@jonsnyder01/increment": "^3.4.0-beta.3",
     "jasmine": "^3.7.0"
   }
 }

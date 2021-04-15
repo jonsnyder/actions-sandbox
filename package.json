@@ -20,9 +20,6 @@
   },
   "homepage": "https://github.com/jonsnyder/actions-sandbox#readme",
   "devDependencies": {
-    "@actions/github": "^4.0.0",
-    "@octokit/rest": "^18.3.5",
-    "jasmine": "^3.7.0",
-    "semver": "^7.3.4"
+    "jasmine": "^3.7.0"
   }
 }

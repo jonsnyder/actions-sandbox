@@ -34,7 +34,7 @@ jobs:
           node-version: 15.x
       - run: ./scripts/deploy.sh ${{ github.event.inputs.version }}
         env:
-          - NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - uses: jonsnyder/project-card-release-automation/record-release@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
           node-version: 15.x
       - run: ./scripts/deploy.sh ${{ github.event.inputs.version }}
         env:
-          - NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - uses: jonsnyder/project-card-release-automation/record-release@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

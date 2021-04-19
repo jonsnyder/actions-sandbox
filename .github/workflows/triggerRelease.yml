@@ -6,7 +6,7 @@ on:
     branch:
       - main
       - "v[0-9]+"
-      - "v[0-9]+.[0-9]"
+      - "v[0-9]+.[0-9]+"
 jobs:
   triggerReleaseIfNeeded:
     name: "Trigger Release If Needed"

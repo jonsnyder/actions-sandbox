@@ -15,8 +15,9 @@ git remote add gh-origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GI
 npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
 
 # update version in package.json and package-lock.json
-npm version ${VERSION}
-git push gh-origin HEAD:${GITHUB_REF} --follow-tags
+npm version ${VERSION} --git-tag-version=false
+git add package.json package-lock.json
+git commit -m "${VERSION}"
 
 # publish the package to NPM if it hasn't already been published
 if [[ -z "$(npm view @jonsnyder01/increment@${VERSION})" ]]; then
@@ -25,3 +26,12 @@ if [[ -z "$(npm view @jonsnyder01/increment@${VERSION})" ]]; then
 else
   echo "NPM already has version ${VERSION}"
 fi
+
+# update reference to NPM version
+npm install @jonsnyder01/increment@${VERSION} --save-dev
+git add package.json package-lock.json
+
+# tag and push the release
+git commit -m "update self devDependency to ${VERSION}"
+git tag -a "v${VERSION}" -m "${VERSION}"
+git push gh-origin HEAD:${GITHUB_REF} --follow-tags

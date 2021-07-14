@@ -16,7 +16,7 @@ npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
 
 # update version in package.json and package-lock.json
 npm version ${VERSION}
-git push gh-origin HEAD:${GITHUB_REF} --follow-tags
+git push gh-origin HEAD:${GITHUB_REF} --follow-tags --force
 
 # publish the package to NPM if it hasn't already been published
 if [[ -z "$(npm view @jonsnyder01/increment@${VERSION})" ]]; then

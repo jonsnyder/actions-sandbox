@@ -16,6 +16,7 @@ npm config set //registry.npmjs.org/:_authToken=${NPM_TOKEN}
 
 # update version in package.json and package-lock.json
 npm version ${VERSION}
+git commit --amend -m "[skip ci] ${VERSION}"
 git push --force gh-origin HEAD:${GITHUB_REF} --follow-tags
 
 # publish the package to NPM if it hasn't already been published

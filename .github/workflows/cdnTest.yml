@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: webfactory/ssh-agent@v0.5.3
+        with:
+        ssh-private-key: ${{ secrets.CDN_PRIVATE_KEY }}
       - run: ./scripts/cdn.sh
-        env:
-          CDN_PRIVATE_KEY: ${{ secrets.CDN_PRIVATE_KEY }}

@@ -1,0 +1,12 @@
+name: CDN Test
+on: workflow_dispatch
+
+jobs:
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./scripts/cdn.sh
+        env:
+          CDN_PRIVATE_KEY: ${{ secrets.CDN_PRIVATE_KEY }}

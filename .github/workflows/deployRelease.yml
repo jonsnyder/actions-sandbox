@@ -63,7 +63,7 @@ jobs:
     needs: [prerelease, release]
     if: failure() == false
     steps:
-      - uses: jonsnyder/project-card-release-automation/record-release@githubReleaseNotes
+      - uses: adobe/project-card-release-automation/record-release@githubReleaseNotes
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ github.event.inputs.version }}

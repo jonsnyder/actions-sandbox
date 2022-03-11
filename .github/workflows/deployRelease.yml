@@ -12,7 +12,7 @@ jobs:
     name: "Validate"
     runs-on: ubuntu-latest
     steps:
-      - uses: adobe/project-card-release-automation/validate-version@main
+      - uses: adobe/project-card-release-automation/validate-version@githubReleaseNotes
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ github.event.inputs.version }}
@@ -63,7 +63,7 @@ jobs:
     needs: [prerelease, release]
     if: failure() == false
     steps:
-      - uses: jonsnyder/project-card-release-automation/record-release@main
+      - uses: jonsnyder/project-card-release-automation/record-release@githubReleaseNotes
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ github.event.inputs.version }}

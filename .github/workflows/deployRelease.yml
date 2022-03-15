@@ -21,7 +21,7 @@ jobs:
       - if: ${{ contains(github.event.inputs.version, '-') }}
         run: echo "ENVIRONMENT=Prerelease" >> $GITHUB_ENV
     outputs:
-      - environment: ${{ env.ENVIRONMENT }}
+      environment: ${{ env.ENVIRONMENT }}
   release:
     name: "Release"
     runs-on: ubuntu-latest

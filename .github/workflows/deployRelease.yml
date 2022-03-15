@@ -16,11 +16,17 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ github.event.inputs.version }}
+      - if: ${{ contains(github.event.inputs.version, '-') == false }}
+        run: echo "ENVIRONMENT=Deploy" >> $GITHUB_ENV
+      - if: ${{ contains(github.event.inputs.version, '-') }}
+        run: echo "ENVIRONMENT=Prerelease" >> $GITHUB_ENV
+    outputs:
+      - environment: ${{ env.ENVIRONMENT }}
   release:
     name: "Release"
     runs-on: ubuntu-latest
     needs: validate
-    environment: Deploy
+    environment: ${{ needs.validate.outputs.environment }}
     if: ${{ contains(github.event.inputs.version, '-') == false }}
     steps:
       - uses: actions/checkout@v2
@@ -41,6 +47,7 @@ jobs:
     name: "Prerelease"
     runs-on: ubuntu-latest
     needs: validate
+    environment: ${{ needs.validate.outputs.environment }}
     if: ${{ contains(github.event.inputs.version, '-') }}
     steps:
       - uses: actions/checkout@v2
